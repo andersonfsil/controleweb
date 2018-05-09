@@ -10,10 +10,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.andersonferreira.controleweb.domain.Categoria;
 import com.andersonferreira.controleweb.domain.Cidade;
+import com.andersonferreira.controleweb.domain.Cliente;
+import com.andersonferreira.controleweb.domain.Endereco;
 import com.andersonferreira.controleweb.domain.Estado;
 import com.andersonferreira.controleweb.domain.Produto;
+import com.andersonferreira.controleweb.domain.enums.TipoCliente;
 import com.andersonferreira.controleweb.repositories.CategoriaRepository;
 import com.andersonferreira.controleweb.repositories.CidadeRepository;
+import com.andersonferreira.controleweb.repositories.ClienteRepository;
+import com.andersonferreira.controleweb.repositories.EnderecoRepository;
 import com.andersonferreira.controleweb.repositories.EstadoRepository;
 import com.andersonferreira.controleweb.repositories.ProdutoRepository;
 
@@ -32,6 +37,12 @@ public class ControleWebApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ControleWebApplication.class, args);
@@ -69,6 +80,17 @@ public class ControleWebApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		cli1.getEndrecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 	}
 	
 	
